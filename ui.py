@@ -21,11 +21,11 @@ class clockwyrmApp:
         self.label.pack(pady=10)
 
         # Progression Bar
-        self.canvas = tk.Canvas(root, width=300, height=300, bg="lightgrey")
+        self.canvas = tk.Canvas(root, width=300, height=300, bg="white")
         self.canvas.pack(pady=10)
 
         # Background Arc
-        self.canvas.create_arc(50, 50, 250, 250, start=0, extent=359.9, outline='lightgray', style= tk.ARC, width=20)
+        self.canvas.create_arc(50, 50, 250, 250, start=0, extent=359.9, outline='white', style= tk.ARC, width=20)
 
         # Prgression Arc
         self.progress_arc = self.canvas.create_arc(50, 50, 250, 250, start=0, extent=359.9, outline='purple', style=tk.ARC, width=20)
@@ -34,16 +34,29 @@ class clockwyrmApp:
         self.time_label = self.canvas.create_text(150, 150, text=format_time(self.timer.remaining_time), font=("Helvetica", 24), fill="black")
 
         # Start Button
-        self.start_button = tk.Button(root, text="Start", command=self.timer.start)
+        self.start_button = tk.Button(root, text="Start", command=self.timer.start, bg="green", fg="white")
         self.start_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Pause Button
-        self.pause_button = tk.Button(root, text="Pause", command=self.timer.pause)
+        self.pause_button = tk.Button(root, text="Pause", command=self.timer.pause, bg="yellow", fg="black")
         self.pause_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Reset Button
-        self.reset_button = tk.Button(root, text="Reset", command=self.reset)
+        self.reset_button = tk.Button(root, text="Reset", command=self.reset, bg="red", fg="white")
         self.reset_button.pack(side=tk.LEFT, padx=10, pady=10)
+
+        # === Task UI ===
+
+        self.tasks_frame = tk.Frame(root)
+        self.tasks_frame.pack(pady=20, fill=tk.X, padx=20)
+
+        self.task_entry = tk.Entry(self.tasks_frame, font=("Helvetica", 14), width=20)
+        self.task_entry.pack(side=tk.LEFT, padx=10)
+
+        self.add_task_button = tk.Button(self.tasks_frame, text="Add Task", command=self.add_task)
+        self.add_task_button.pack(side=tk.LEFT, padx=10)
+
+
 
     def update_ui(self, time_str, session_type):
         self.label.config(text=session_type)
