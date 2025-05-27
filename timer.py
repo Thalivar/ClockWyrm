@@ -42,3 +42,25 @@ class Timer():
         self.is_work_session = True
         self.remaining_time = self.work_duration
         self.update_callback(format_time(self.remaining_time), "Work Session")
+
+    def add_task(self):
+        task = self.task_entry.get().strip()
+        if task and task not in self.tasks:
+            self.tasks.append(task)
+            self.task_listbox.insert(tk.END, task)
+            self.task_time_log[task] = 0
+            self.task_entry.delete(0, tk.END)
+    
+    def delete_task(self):
+        selected = self.tasks_listbox.curselection()
+        if selected:
+            task = self.tasks_listbox.get(selected)
+            self.tasks_listbox.delete(selected)
+            del self.task_time_log[task]
+    
+    def start_selected_task(self):
+        selected = self.tasks_listbox.curselection()
+        if selected:
+            self.current_task = self.tasks_listbox.get(selected)
+            self.label.config(text=f"Working on: {self.current_task}")
+            self.timer_reset()

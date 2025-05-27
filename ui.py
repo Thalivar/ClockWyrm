@@ -47,14 +47,25 @@ class clockwyrmApp:
 
         # === Task UI ===
 
+        # Task list setup
         self.tasks_frame = tk.Frame(root)
         self.tasks_frame.pack(pady=20, fill=tk.X, padx=20)
 
+        # Task entry
         self.task_entry = tk.Entry(self.tasks_frame, font=("Helvetica", 14), width=20)
         self.task_entry.pack(side=tk.LEFT, padx=10)
 
-        self.add_task_button = tk.Button(self.tasks_frame, text="Add Task", command=self.add_task)
+        
+        self.add_task_button = tk.Button(self.tasks_frame, text="Add Task", command=Timer.add_task, bg="blue", fg="white")
         self.add_task_button.pack(side=tk.LEFT, padx=10)
+
+        self.task_listbox = tk.Listbox(self.tasks_frame, font=("Helvetica", 14), width=30)
+        self.task_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        self.delete_task_button = tk.Button(self.tasks_frame, text="Delete Task", command=Timer.delete_task, bg="red", fg="white")
+        self.delete_task_button.pack(side=tk.LEFT, padx=10)
+
+        self.start_task_button = tk.Button(self.tasks_frame, text="Start Task", command=Timer.start_selected_task, bg="green", fg="white")
 
 
 
