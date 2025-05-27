@@ -10,8 +10,8 @@ class clockwyrmApp:
         # Timer Setup
         self.timer = Timer(
             root=self.root,
-            work_duration=1 * 60, 
-            break_duration=1 * 60,
+            work_duration=1 * 30, 
+            break_duration=1 * 30,
             update_callback=self.update_ui
         )
 
@@ -32,13 +32,15 @@ class clockwyrmApp:
         # Time Label
         self.time_label = self.canvas.create_text(150, 150, text=format_time(self.timer.remaining_time), font=("Helvetica", 24), fill="black")
 
-        # Timer Buttons
+        # Start Timer Button
         self.start_button = tk.Button(root, text="Start", command=self.timer.start, bg="green", fg="white")
         self.start_button.pack(side=tk.LEFT, padx=10, pady=10)
 
+        # Pause Timer Button
         self.pause_button = tk.Button(root, text="Pause", command=self.timer.pause, bg="yellow", fg="black")
         self.pause_button.pack(side=tk.LEFT, padx=10, pady=10)
 
+        # Reset Timer Button
         self.reset_button = tk.Button(root, text="Reset", command=self.reset, bg="red", fg="white")
         self.reset_button.pack(side=tk.LEFT, padx=10, pady=10)
 
