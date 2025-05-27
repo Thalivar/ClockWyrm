@@ -21,6 +21,10 @@ class Timer():
             self.update_callback(format_time(self.remaining_time), "Work Session" if self.is_work_session else "Break")
             self.timer_id = self.root.after(1000, self._tick)
         else:
+            if self.is_work_session and hasattr(self, 'current_task'):
+                if self.current_task in self.task_time_log:
+                    self.task_time_log[self.current_task] += self.work_dration
+            
             self.is_work_session = not self.is_work_session
             self.remaining_time = self.work_duration if self.is_work_session else self.break_duration
             self._tick()
@@ -42,25 +46,3 @@ class Timer():
         self.is_work_session = True
         self.remaining_time = self.work_duration
         self.update_callback(format_time(self.remaining_time), "Work Session")
-
-    def add_task(self):
-        task = self.task_entry.get().strip()
-        if task and task not in self.tasks:
-            self.tasks.append(task)
-            self.task_listbox.insert(tk.END, task)
-            self.task_time_log[task] = 0
-            self.task_entry.delete(0, tk.END)
-    
-    def delete_task(self):
-        selected = self.tasks_listbox.curselection()
-        if selected:
-            task = self.tasks_listbox.get(selected)
-            self.tasks_listbox.delete(selected)
-            del self.task_time_log[task]
-    
-    def start_selected_task(self):
-        selected = self.tasks_listbox.curselection()
-        if selected:
-            self.current_task = self.tasks_listbox.get(selected)
-            self.label.config(text=f"Working on: {self.current_task}")
-            self.timer_reset()
