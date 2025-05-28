@@ -6,6 +6,7 @@ class clockwyrmApp:
     def __init__(self, root):
         self.root = root
         self.root.title("ClockWyrm")
+        root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Timer Setup
         self.timer = Timer(
@@ -83,7 +84,7 @@ class clockwyrmApp:
         self.canvas.itemconfig(self.progress_arc, extent=-progress)  # Negative for clockwise
 
         if self.current_task:
-            time_spent = self.task_time_log.get(self.current_task, 0)
+            time_spent = self.timer.task_time_log.get(self.current_task, 0)
             self.label.config(text=f"{session_type}\nTask: {self.current_task} (Time: {format_time(time_spent)})")
 
     def reset(self):
@@ -109,7 +110,9 @@ class clockwyrmApp:
     def start_selected_task(self):
         selected = self.task_listbox.curselection()
         if selected:
-            self.current_task = self.task_listbox.get(selected)
+            task_name = self.task_listbox.get(selected)
+            self.current_task = task_name
+            self.timer.set_current_task(task_name)
             self.timer.reset()
     
     def enable_task_buttons(self):
@@ -119,3 +122,15 @@ class clockwyrmApp:
         else:
             self.start_task_button.config(state=tk.DISABLED)
             self.delete_task_button.config(state=tk.DISABLED)
+    
+    def start_selected_task(self):
+        selected = self.task_listbox.curselection()
+        if selected:
+            task_name =self.task_listbox.get(selected)
+            self.current_task = task_name
+            self.timer.set_current_task(task_name)
+            self.timer.reset()
+    
+    def on_close(self):
+        self.timer.save_logs()
+        self.root.destroy()      
