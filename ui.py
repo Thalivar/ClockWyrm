@@ -7,6 +7,7 @@ class clockwyrmApp:
         self.root = root
         self.root.title("ClockWyrm")
         root.protocol("WM_DELETE_WINDOW", self.on_close)
+        root.config(bg="#3B3939")
 
         # Timer Setup
         self.timer = Timer(
@@ -17,21 +18,21 @@ class clockwyrmApp:
         )
 
         # Session Label
-        self.label = tk.Label(root, text="Work Session", font=("Helvetica", 24))
+        self.label = tk.Label(root, text="Work Session", font=("Helvetica", 24,), bg="#3B3939")
         self.label.pack(pady=10)
 
         # Progression Bar
-        self.canvas = tk.Canvas(root, width=300, height=300, bg="white")
+        self.canvas = tk.Canvas(root, width=300, height=300, bg="#3B3939")
         self.canvas.pack(pady=10)
 
         # Background Arc
-        self.canvas.create_arc(50, 50, 250, 250, start=0, extent=359.9, outline='#e0e0e0', style=tk.ARC, width=20)
+        self.canvas.create_arc(50, 50, 250, 250, start=0, extent=359.9, outline='#3B3939', style=tk.ARC, width=20)
 
         # Progress Arc
-        self.progress_arc = self.canvas.create_arc(50, 50, 250, 250, start=90, extent=0, outline='purple', style=tk.ARC, width=20)
+        self.progress_arc = self.canvas.create_arc(50, 50, 250, 250, start=0, extent=0, outline="#D17DE6", style=tk.ARC, width=20)
 
         # Time Label
-        self.time_label = self.canvas.create_text(150, 150, text=format_time(self.timer.remaining_time), font=("Helvetica", 24), fill="black")
+        self.time_label = self.canvas.create_text(150, 150, text=format_time(self.timer.remaining_time), font=("Helvetica", 24), fill="white")
 
         # Start Timer Button
         self.start_button = tk.Button(root, text="Start", command=self.timer.start, bg="green", fg="white")
@@ -46,11 +47,11 @@ class clockwyrmApp:
         self.reset_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         # === Task UI ===
-        self.tasks_frame = tk.Frame(root)
-        self.tasks_frame.pack(pady=20, fill=tk.X, padx=20)
+        self.tasks_frame = tk.Frame(root, bg="#3B3939")
+        self.tasks_frame.pack(pady=20, fill=tk.X, padx=20, )
 
         # Task Entry
-        self.task_entry = tk.Entry(self.tasks_frame, font=("Helvetica", 14), width=20)
+        self.task_entry = tk.Entry(self.tasks_frame, font=("Helvetica", 14), width=20, bg="#3B3939")
         self.task_entry.pack(side=tk.LEFT, padx=10)
         
         # Add Task Button
@@ -58,7 +59,7 @@ class clockwyrmApp:
         self.add_task_button.pack(side=tk.LEFT, padx=10)
 
         # Task Listbox
-        self.task_listbox = tk.Listbox(self.tasks_frame, font=("Helvetica", 14), height=5)
+        self.task_listbox = tk.Listbox(self.tasks_frame, font=("Helvetica", 14), height=5, bg="#696666")
         self.task_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Task Control Buttons
