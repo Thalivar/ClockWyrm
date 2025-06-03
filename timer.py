@@ -1,6 +1,6 @@
 import tkinter as tk
 import time
-from utils import format_time
+from utils import format_time, play_sound
 import json
 import os
 
@@ -8,6 +8,8 @@ class Timer():
     
     def __init__(self, root, work_duration, break_duration, update_callback):
         self.root = root
+        self.default_work_duration = work_duration
+        self.default_break_duration = break_duration
         self.work_duration = work_duration
         self.break_duration = break_duration
         self.update_callback = update_callback
@@ -27,6 +29,9 @@ class Timer():
             self.update_callback(format_time(self.remaining_time), "Work Session" if self.is_work_session else "Break")
             self.timer_id = self.root.after(1000, self._tick)
         else:
+
+            play_sound("work" if self.is_work_session else "break")
+
             if self.is_work_session and hasattr(self, 'current_task'):
                 if self.current_task in self.task_time_log:
                     self.task_time_log[self.current_task] += self.work_duration
@@ -68,3 +73,8 @@ class Timer():
                 self.task_time_log = json.load(f)
         except FileNotFoundError:
             self.task_time_log = {}          
+
+    def set_duration(self, work_mins, break_mins):
+        self.work_duration = work_mins * 60
+        self.break_duration = break_mins * 60
+        self.reset()

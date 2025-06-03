@@ -77,6 +77,21 @@ class clockwyrmApp:
         # Bind selection event
         self.task_listbox.bind("<<ListboxSelect>>", lambda e: self.enable_task_buttons())
 
+        self.timer_frame = tk.Frame(root, bg="#3B3939")
+        self.timer_frame.pack(pady=10)
+
+        tk.Label(self.timer_frame, text="Work (mins)", bg="#3B3939", fg="white").pack(side=tk.LEFT)
+        self.work_entry = tk.Entry(self.timer_frame, width=5)
+        self.work_entry.pack(side=tk.LEFT, padx=5)
+        self.work_entry.insert(0, 25)
+
+        tk.Label(self.timer_frame, text="Break (mins)", bg="#3B3939", fg="white").pack(side=tk.LEFT)
+        self.break_entry = tk.Entry(self.timer_frame, width=5)
+        self.break_entry.pack(side=tk.LEFT, padx=5)
+        self.break_entry.insert(0, 5)
+
+        tk.Button(self.timer_frame, text="Set Timer", command=self.set_custom_time, bg="purple", fg="white").pack(side=tk.LEFT, padx=10)
+
     def update_ui(self, time_str, session_type):
         self.canvas.itemconfig(self.time_label, text=time_str)
         
@@ -124,14 +139,15 @@ class clockwyrmApp:
             self.start_task_button.config(state=tk.DISABLED)
             self.delete_task_button.config(state=tk.DISABLED)
     
-    def start_selected_task(self):
-        selected = self.task_listbox.curselection()
-        if selected:
-            task_name =self.task_listbox.get(selected)
-            self.current_task = task_name
-            self.timer.set_current_task(task_name)
-            self.timer.reset()
-    
     def on_close(self):
         self.timer.save_logs()
         self.root.destroy()      
+
+    def set_custom_time(self):
+        try:
+            work_mins = int(self.work_entry.get())
+            break_mins = int(self.break_entry.get())
+            if work_mins > 0 and break_mins > 0:
+                self.timer.set_duration(work_mins, break_mins)
+        except ValueError:
+            pass
